@@ -19,8 +19,6 @@ let appModule = angular.module('app', [
   ])
   .config(($locationProvider) => {
     'ngInject';
-    // @see: https://github.com/angular-ui/ui-router/wiki/Frequently-Asked-Questions
-    // #how-to-configure-your-server-to-work-with-html5mode
     $locationProvider.html5Mode(true).hashPrefix('!');
   })
 
@@ -29,15 +27,13 @@ let appModule = angular.module('app', [
       // Allow same origin resource loads.
       'self',
       // Allow loading from our assets domain.  Notice the difference between * and **.
-      'http://docs.angularjs.org/**',
-      'https://docs.angularjs.org/**',
-      'http://storage.googleapis.com/**',
-      'https://storage.googleapis.com/**'
+      'http://**',
+      'https://**'
     ]);
   }])
 
   .component('app', AppComponent)
 
   .name;
-  
-  export default appModule;
+
+export default appModule;
