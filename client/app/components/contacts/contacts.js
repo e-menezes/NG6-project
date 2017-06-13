@@ -8,12 +8,33 @@ let contactsModule = angular.module('contacts', [
 ])
 
 .config(($stateProvider) => {
-  "ngInject";
+  'ngInject';
 
   $stateProvider
     .state('contacts', {
       url: '/contacts',
       component: 'contacts'
+    })
+    .state('contacts.detail', {
+      url: '/detail',
+      template: `
+        <contact-detail 
+          contato="$ctrl.contato"
+          deletar-contato="$ctrl.deletarContato($event)">
+        </contact-detail>
+      `
+    })
+    .state('contacts.edit', {
+      url: '/edit',
+      template: `
+        <contact-editor
+          contato="$ctrl.contato"
+          editing="$ctrl.editing"
+          erro="{{$ctrl.erro}}"
+          novo-contato="$ctrl.novoContato($event)"
+          modificar-contato="$ctrl.modificarContato($event)">
+        </contact-editor>
+      `
     });
 })
 

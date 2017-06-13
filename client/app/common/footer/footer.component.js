@@ -3,7 +3,6 @@ import controller from './footer.controller';
 import './footer.scss';
 
 let footerComponent = {
-  restrict: 'E',
   bindings: {},
   transclude: true,
   template,

@@ -8,7 +8,7 @@ let componentModule = angular.module('app.components', [
   aboutModule,
   contactsModule
 ])
-  
+
 .name;
 
 export default componentModule;

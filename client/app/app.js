@@ -39,6 +39,5 @@ let appModule = angular.module('app', [
   .component('app', AppComponent)
 
   .name;
-
-angular.bootstrap(document.body, [appModule]);
-// export default appModule;
+  
+  export default appModule;

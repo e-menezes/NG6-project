@@ -1,13 +1,3 @@
-$primaryColor: #0277bd;
-$accentColor: #1de9b6;
-$bgColor: #fffff0;
-$darkBgColor: #263238;
-$lightBgColor: #37474f;
-$lightTextColor: #f5f5f5;
-$darkTextColor: #212121;
-$highlight: yellow;
-$footerSize: 60px;
-
 html {
     font-size: 62.5%;
     line-height: 1.4;
@@ -27,6 +17,12 @@ body, html {
     -moz-osx-font-smoothing: grayscale;
     height: 100%;
     position: relative;
+}
+
+body {
+    overflow: hidden;
+    max-width: 100%;
+    max-height: 100%;
 }
 
 .layout-column, .layout-row {
