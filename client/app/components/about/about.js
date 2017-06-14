@@ -10,14 +10,14 @@ let aboutModule = angular.module('about', [
   "ngInject";
 
   $stateProvider
-    .state('about', {
+    .state('About', {
       url: '/about',
       component: 'about'
     });
 })
 
 .component('about', aboutComponent)
-  
+
 .name;
 
 export default aboutModule;

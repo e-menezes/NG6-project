@@ -1,9 +1,11 @@
-import template from './navbar.html';// !text é um artifício do systemjs no plunker para carregar html
+import template from './navbar.html';
 import controller from './navbar.controller';
-import './navbar.scss'; // !css é um artifício do systemjs no plunker para carregar arquivos css ou scss ou sass
+import './navbar.scss';
 
 let navbarComponent = {
-  bindings: {},
+  bindings: {
+    estados: '<'
+  },
   template,
   controller
 };

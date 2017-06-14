@@ -1,6 +1,6 @@
-import template from './contacts.html'; // !text é um artifício do systemjs no plunker para carregar html
+import template from './contacts.html';
 import controller from './contacts.controller';
-import './contacts.scss'; // !css é um artifício do systemjs no plunker para carregar arquivos css ou scss ou sass
+import './contacts.scss';
 
 let contactsComponent = {
   bindings: {},

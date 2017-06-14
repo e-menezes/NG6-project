@@ -1,64 +1,55 @@
 import angular from 'angular';
-import _contacts from './contacts-data';
+import _contatos from './data';
 
-function ContactsMock($httpBackend, $log, storage) {
-  let contacts = angular.copy(storage.load('contacts', _contacts));
-  let _id = storage.load('contacts-index', _contacts.length+1);
-  
-  $httpBackend.whenGET('/api/contacts').respond( (method, url, data, headers) => {
+function ContactsMock($httpBackend, $log, storage, tokenManager, crudFactory) {
+  let crudObj = crudFactory.getCrudPara('contatos',_contatos);
+
+  $httpBackend.whenGET('/api/contatos').respond( (method, url, data, headers) => {
     $log.log('Dados recebidos:', method, url, data, headers);
-    return [200, contacts, {}];
+    // if(!headers['token'] || !tokenManager.ehValido(headers['token']))
+    //   return [401,{},{}];
+    let contatos = crudObj.get();
+    return [200, contatos, {}];
   });
 
-  $httpBackend.whenPOST('/api/contacts').respond( (method, url, data, headers) => {
+  $httpBackend.whenPOST('/api/contatos').respond( (method, url, data, headers) => {
     $log.log('Dados recebidos:', method, url, data, headers);
+    // if(!headers['token'] || !tokenManager.ehValido(headers['token']))
+    //   return [401,{},{}];
     let _data = JSON.parse(data);
-    _data.id = _id++;
-    contacts.push(_data);
-    storage.save('contacts', contacts);
-    storage.save('contacts-index', _id);
-    return [200, contacts, {}];
+    let id = crudObj.post(_data);
+    return [200, id, {}];
   });
 
-  $httpBackend.whenDELETE(/^\/api\/contacts.*$/).respond( (method, url, data, headers) => {
+  $httpBackend.whenDELETE(/^\/api\/contatos.*$/).respond( (method, url, data, headers) => {
     $log.log('Dados recebidos:', method, url, data, headers);
-    if (url === '/api/contacts') {// reseta toda a coleção
-      contacts = angular.copy(_contacts);
-      _id = _contacts.length+1;
-      storage.load('contacts-index', _id);
+    // if(!headers['token'] || !tokenManager.ehValido(headers['token']))
+    //   return [401,{},{}];
+    if (url === '/api/contatos') {// reseta toda a coleção
+      let contatos = crudObj.resetData();
+      return [204, contatos, {}]
     } else { //deleta um item da coleção
       let id = url.substring(14);
-      for(let i=0; i<contacts.length; i++) {
-        if(contacts[i].id == id){
-          contacts.splice(i, 1);
-          break;
-        }
-      }
+      crudObj.delete(id);
     }
-    storage.save('contacts', contacts);
-    return [200, contacts, {}];
+    return [204, {}, {}];
   });
 
-  $httpBackend.whenPUT(/^\/api\/contacts.*$/).respond( (method, url, data, headers) => {
+  $httpBackend.whenPUT(/^\/api\/contatos.*$/).respond( (method, url, data, headers) => {
     $log.log('Dados recebidos:', method, url, data, headers);
+    // if(!headers['token'] || !tokenManager.ehValido(headers['token']))
+    //   return [401,{},{}];
     let _data = JSON.parse(data);
-    if (url === '/api/contacts') {// atualiza toda a coleção
-      contacts = _data;
+    if (url === '/api/contatos') {// atualiza toda a coleção
+      contatos = _data;
     } else { //atualiza um item da coleção
       let id = url.substring(14);
-      for(let i=0; i<contacts.length; i++) {
-        if(contacts[i].id == id){
-          contacts[i].name = _data.name;
-          contacts[i].phone = _data.phone;
-          break;
-        }
-      }
+      crudObj.put(id, _data);
     }
-    storage.save('contacts', contacts);
-    return [200, contacts, {}];
+    return [200, {}, {}];
   });
 }
 
-ContactsMock.$inject = ['$httpBackend','$log','StorageService'];
+ContactsMock.$inject = ['$httpBackend','$log','StorageService','TokenManager','CrudFactory'];
 
 export default ContactsMock;

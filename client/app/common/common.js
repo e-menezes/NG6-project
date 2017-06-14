@@ -5,13 +5,15 @@ import footerModule from './footer/footer';
 import contactsViewerModule from './contacts-viewer/contacts-viewer';
 import contactEditorModule from './contact-editor/contact-editor';
 import contactDetailModule from './contact-detail/contact-detail';
+import colecaoModule from './colecao/colecao';
 
 let commonModule = angular.module('app.common', [
   navbarModule,
   footerModule,
   contactsViewerModule,
   contactEditorModule,
-  contactDetailModule
+  contactDetailModule,
+  colecaoModule
 ])
 
 .name;

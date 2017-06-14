@@ -1,29 +1,36 @@
-class ContactsController {
-  constructor(ContactsService, $state) {
-    this.titulo = 'Contacts';
-    this.ContactsService = ContactsService;
+class ContatosController {
+  constructor(ContatosService, $state) {
+    this.titulo = 'Contatos';
+    this.ContatosService = ContatosService;
     this.$state = $state;
-    ContactsService.getContacts()
-      .then(contacts => this.contacts = contacts);
+    ContatosService.getContatos()
+      .then(contatos => this.contatos = contatos);
   }
 
   $onInit(){
     this.editing = false;
+    this.configuracaoColecao = {
+      nomeDaColecao: 'Contatos',
+      nomeDoItemDaColecao: 'Contato',
+      propriedadesDosItens: ['id','nome','fone'],
+      propriedadePrincipal: 'nome',
+      propriedadeSecundaria: 'fone'
+    }
   }
-  
+
   criarNovoContato() {
-    delete this.contato;
+    delete this.contatoSelecionado;
+    delete this.erro;
     this.editing = false;
-    this.$state.go('contacts.edit');
+    this.$state.go('Contatos.editar');
   }
-  
+
   novoContato(contato) {
-    if (contato && contato.name && contato.phone) {
+    if (contato) {
       this.erro = 'Criando contato';
-      this.ContactsService.createContact(contato.name, contato.phone)
-        .then((contacts)=>{
-          this.contacts = contacts;
-          this.contato = {};
+      this.ContatosService.createContato(contato)
+        .then((contato)=>{
+          this.contatos.push(contato);
           this.erro = 'Contato criado com sucesso!';
         });
     } else {
@@ -32,40 +39,40 @@ class ContactsController {
   }
 
   resetarContatos() {
-    this.ContactsService.deleteContacts()
-      .then((contacts)=>{
-        this.contacts = contacts;
-        this.erro = 'Contatos resetados!';
+    this.ContatosService.deleteContatos()
+      .then((contatos)=>{
+        this.contatos = contatos;
+        this.$state.go('Contatos');
       });
   }
 
   deletarContato(){
-    this.ContactsService.deleteContact(this.contato.id)
-      .then((contacts)=>{
-        this.contacts = contacts;
-        this.erro = 'Contato deletado!';
+    this.ContatosService.deleteContato(this.contatoSelecionado.id)
+      .then((contatos)=>{
         this.editing = false;
-        delete this.contato;
-        this.$state.go('contacts');
+        delete this.contatoSelecionado;
+        this.contatos = contatos;
+        this.$state.go('Contatos');
+        return this.contatos;
       });
   }
 
   onContatoClicked(contato){
-    this.contato = angular.copy(contato);
+    this.contatoSelecionado = angular.copy(contato);
     this.editing = true;
-    this.$state.go('contacts.detail');
+    this.$state.go('Contatos.detalhar');
   }
 
   modificarContato(){
-    this.ContactsService.modifyContacts(this.contato.name, this.contato.phone, this.contato.id)
-      .then((contacts)=>{
-        this.contacts = contacts;
+    this.ContatosService.modifyContatos(this.contatoSelecionado)
+      .then(()=>{
         this.erro = 'Contato alterado!';
         this.editing = false;
-        delete this.contato;
+        delete this.contatoSelecionado;
+        this.$state.go('Contatos');
       });
   }
 }
 
-ContactsController.$inject = ['ContactsService','$state'];
-export default ContactsController;
+ContatosController.$inject = ['ContatosService','$state'];
+export default ContatosController;

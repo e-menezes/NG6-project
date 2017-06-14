@@ -7,12 +7,12 @@ let homeModule = angular.module('home', [
 ])
 
 .config(($stateProvider, $urlRouterProvider) => {
-  "ngInject";
+  'ngInject';
 
   $urlRouterProvider.otherwise('/');
 
   $stateProvider
-    .state('home', {
+    .state('Home', {
       url: '/',
       views: {
         '': {component: 'home'},
@@ -22,7 +22,7 @@ let homeModule = angular.module('home', [
 })
 
 .component('home', homeComponent)
-  
+
 .name;
 
 export default homeModule;

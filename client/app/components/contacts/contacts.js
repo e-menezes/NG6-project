@@ -1,9 +1,9 @@
 import angular from 'angular';
 import uiRouter from 'angular-ui-router';
-import contactsComponent from './contacts.component';
-import contactsService from './contacts.service';
+import contatosComponent from './contacts.component';
+import contatosService from './contacts.service';
 
-let contactsModule = angular.module('contacts', [
+let contatosModule = angular.module('contatos', [
   uiRouter
 ])
 
@@ -11,37 +11,39 @@ let contactsModule = angular.module('contacts', [
   'ngInject';
 
   $stateProvider
-    .state('contacts', {
-      url: '/contacts',
-      component: 'contacts'
+    .state('Contatos', {
+      url: '/contatos',
+      component: 'contatos'
     })
-    .state('contacts.detail', {
+    .state('Contatos.detalhar', {
       url: '/detail',
       template: `
-        <contact-detail 
-          contato="$ctrl.contato"
-          deletar-contato="$ctrl.deletarContato($event)">
-        </contact-detail>
+        <item-detalhar
+          configuracao-colecao="$ctrl.configuracaoColecao"
+          item="$ctrl.contatoSelecionado"
+          deletar-item="$ctrl.deletarContato($event)">
+        </item-detalhar>
       `
     })
-    .state('contacts.edit', {
+    .state('Contatos.editar', {
       url: '/edit',
       template: `
-        <contact-editor
-          contato="$ctrl.contato"
+        <item-editar
+          configuracao-colecao="$ctrl.configuracaoColecao"
+          item="$ctrl.contatoSelecionado"
           editing="$ctrl.editing"
           erro="{{$ctrl.erro}}"
-          novo-contato="$ctrl.novoContato($event)"
-          modificar-contato="$ctrl.modificarContato($event)">
-        </contact-editor>
+          novo-item="$ctrl.novoContato($event)"
+          modificar-item="$ctrl.modificarContato($event)">
+        </item-editar>
       `
     });
 })
 
-.service('ContactsService', contactsService)
+.service('ContatosService', contatosService)
 
-.component('contacts', contactsComponent)
+.component('contatos', contatosComponent)
 
 .name;
 
-export default contactsModule;
+export default contatosModule;
